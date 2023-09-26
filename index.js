@@ -1,5 +1,5 @@
 let SERVER_NAME = 'product-api'
-let PORT = 3000;
+let PORT = 5000;
 let HOST = '127.0.0.1';
 
 let postCount = 0;
@@ -81,25 +81,25 @@ server.get('/products/:id', function (req, res, next) {
     console.log('GET:' + getCount, 'POST: ' + postCount)
   
     // validation of manadatory fields
-    if (req.body.productId === undefined ) {
+    if (req.body.productID === undefined ) {
       // If there are any errors, pass them to next in the correct format
-      return next(new errors.BadRequestError('name must be supplied'))
+      return next(new errors.BadRequestError('productId must be added'))
     }
     if (req.body.name === undefined ) {
       // If there are any errors, pass them to next in the correct format
-      return next(new errors.BadRequestError('name must be supplied'))
+      return next(new errors.BadRequestError('name must be added'))
     }
     if (req.body.price === undefined ) {
       // If there are any errors, pass them to next in the correct format
-      return next(new errors.BadRequestError('price must be supplied'))
+      return next(new errors.BadRequestError('price must be added'))
     }
     if (req.body.quantity === undefined ) {
       // If there are any errors, pass them to next in the correct format
-      return next(new errors.BadRequestError('quantity must be supplied'))
+      return next(new errors.BadRequestError('quantity must be added'))
     }
   
     let newProduct = {
-      productId: req.body.productId,
+      productID: req.body.productID,
           name: req.body.name, 
           price: req.body.price,
       quantity: req.body.quantity
@@ -116,6 +116,6 @@ server.get('/products/:id', function (req, res, next) {
       }
       // Send the product if no issues
       res.send(201, product)
-      console.log('POST /products: product created successfully')
+      console.log('POST /products: product added successfully')
     })  
-  })  
+  })
