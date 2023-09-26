@@ -33,8 +33,8 @@ server.use(restify.plugins.bodyParser());
 // Get all products in the system
 server.get('/products', function (req, res, next) {
   console.log('GET /products params=>' + JSON.stringify(req.params));
-  getTotalCount++;
-  console.log('GET:' + getTotalCount, 'POST: ' + postTotalCount)
+  getCount++;
+  console.log('GET:' + getCount, 'POST: ' + postCount)
 
 // Find every entity within the given collection
 productsSave.find({}, function (error, products) {
@@ -46,6 +46,31 @@ console.log(`${req.method} ${req.url}: sending response`);
   })
 })
 
-
+// Get a single product by their product id
+server.get('/products/:id', function (req, res, next) {
+    console.log('GET /products/:id params=>' + JSON.stringify(req.params));
+    getCount++;
+    console.log('GET:' + getCount, 'POST: ' + postCount)
+  
+    // Find a single product by their id within save
+    productsSave.findOne({ _id: req.params.id }, function (error, product) {
+  
+      // If there are any errors, pass them to next in the correct format
+      if (error) {
+        return next(new Error(JSON.stringify(error.errors)))
+      }
+  
+      console.log(`${req.method} ${req.url}: sending response`);
+  
+      if (product) {
+        // Send the product if no issues
+        res.send(product)
+        console.log('GET /products/:id: retrieved a product')
+      } else {
+        // Send 404 header if the product doesn't exist
+        res.send(404)
+      }
+    })
+  })
 
 
