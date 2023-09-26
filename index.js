@@ -73,4 +73,49 @@ server.get('/products/:id', function (req, res, next) {
     })
   })
 
-
+  // Create a new Products
+    server.post('/products', function (req, res, next) {
+    console.log('POST /products params=>' + JSON.stringify(req.params));
+    console.log('POST /products body=>' + JSON.stringify(req.body));
+    postCount++;
+    console.log('GET:' + getCount, 'POST: ' + postCount)
+  
+    // validation of manadatory fields
+    if (req.body.productId === undefined ) {
+      // If there are any errors, pass them to next in the correct format
+      return next(new errors.BadRequestError('name must be supplied'))
+    }
+    if (req.body.name === undefined ) {
+      // If there are any errors, pass them to next in the correct format
+      return next(new errors.BadRequestError('name must be supplied'))
+    }
+    if (req.body.price === undefined ) {
+      // If there are any errors, pass them to next in the correct format
+      return next(new errors.BadRequestError('price must be supplied'))
+    }
+    if (req.body.quantity === undefined ) {
+      // If there are any errors, pass them to next in the correct format
+      return next(new errors.BadRequestError('quantity must be supplied'))
+    }
+  
+    let newProduct = {
+      productId: req.body.productId,
+          name: req.body.name, 
+          price: req.body.price,
+      quantity: req.body.quantity
+      }
+  
+    // Create the product using the persistence engine
+    productsSave.create( newProduct, function (error, product) {
+  
+      console.log(`${req.method} ${req.url}: sending response`);
+  
+      // If there are any errors, pass them to next in the correct format
+      if (error) {
+        return next(new Error(JSON.stringify(error.errors)))
+      }
+      // Send the product if no issues
+      res.send(201, product)
+      console.log('POST /products: product created successfully')
+    })  
+  })  
